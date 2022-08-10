@@ -64,5 +64,10 @@ static arguments args;
 //-----------------------------------------------------------------------------
 
 int main(const int argc, const char **argv) {
+  // set default argument values
+  args.frames = DEFAULT_FRAME_COUNT;
+  args.columns = DEFAULT_COLUMNS;
+  args.rows = DEFAULT_ROWS;
+
   return EXIT_SUCCESS;
 }
