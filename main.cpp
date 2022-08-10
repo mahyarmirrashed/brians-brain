@@ -38,23 +38,23 @@ static struct argp_option options[] = {
    .arg = "FRAMES",
    .flags = OPTION_ARG_OPTIONAL,
    .doc = "Number of frames to generate"},
-  {.name = "rows",
-   .key = 'r',
-   .arg = "ROWS",
-   .flags = OPTION_ARG_OPTIONAL,
-   .doc = "Number of rows in each frame"},
   {.name = "columns",
    .key = 'c',
    .arg = "COLUMNS",
    .flags = OPTION_ARG_OPTIONAL,
    .doc = "Number of columns in each frame"},
+  {.name = "rows",
+   .key = 'r',
+   .arg = "ROWS",
+   .flags = OPTION_ARG_OPTIONAL,
+   .doc = "Number of rows in each frame"},
   {0},
 };
 
 typedef struct {
   int frames;
-  int rows;
   int colums;
+  int rows;
 } arguments;
 
 static arguments args;
