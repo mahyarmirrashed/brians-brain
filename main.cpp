@@ -10,6 +10,7 @@
  */
 
 #include <argp.h>
+#include <stdint.h>
 #include <stdlib.h>
 
 //-----------------------------------------------------------------------------
@@ -39,6 +40,14 @@ static struct argp_option options[] = {
    .doc = "Number of columns in each frame"},
   {0},
 };
+
+typedef struct {
+  int frames;
+  int rows;
+  int colums;
+} arguments;
+
+static arguments args;
 
 //-----------------------------------------------------------------------------
 // PROTOTYPES
