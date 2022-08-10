@@ -68,6 +68,13 @@ int main(const int argc, const char **argv);
 // FUNCTIONS
 //-----------------------------------------------------------------------------
 
+/**
+ * @brief Generate a video of the Brian's Brain automaton.
+ *
+ * @param argc Number of arguments passed.
+ * @param argv Argument vector of arguments.
+ * @return int Return code status of program.
+ */
 int main(const int argc, const char **argv) {
   // set default argument values
   args.frames = DEFAULT_FRAME_COUNT;
