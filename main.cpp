@@ -14,6 +14,16 @@
 #include <stdlib.h>
 
 //-----------------------------------------------------------------------------
+// CONSTANTS
+//-----------------------------------------------------------------------------
+
+// default to 60 seconds of video
+#define DEFAULT_FRAME_COUNT 1800
+// default standard high-definition (HD) display resolution (720p)
+#define DEFAULT_COLUMNS 1280
+#define DEFAULT_ROWS    720
+
+//-----------------------------------------------------------------------------
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
