@@ -66,7 +66,7 @@ static arguments args;
 // PROTOTYPES
 //-----------------------------------------------------------------------------
 
-int main(const int argc, const char **argv);
+int main(int argc, char **argv);
 static error_t parse_opt(int key, char *arg, struct argp_state *state);
 
 //-----------------------------------------------------------------------------
@@ -89,11 +89,14 @@ static struct argp argp {
  * @param argv Argument vector of arguments.
  * @return int Return code status of program.
  */
-int main(const int argc, const char **argv) {
+int main(int argc, char **argv) {
   // set default argument values
   args.frames = DEFAULT_FRAME_COUNT;
   args.columns = DEFAULT_COLUMNS;
   args.rows = DEFAULT_ROWS;
+
+  // parse arguments from argument vector
+  argp_parse(&argp, argc, argv, 0, 0, &args);
 
   return EXIT_SUCCESS;
 }
