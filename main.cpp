@@ -139,5 +139,9 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
       else
         args.rows = value;
     }
+  } else {
+    rc = ARGP_ERR_UNKNOWN;
   }
+
+  return rc;
 }
