@@ -53,7 +53,7 @@ static struct argp_option options[] = {
 
 typedef struct {
   int frames;
-  int colums;
+  int columns;
   int rows;
 } arguments;
 
