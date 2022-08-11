@@ -17,6 +17,10 @@
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
+#ifdef _OPENMP
+#include <omp.h>
+#endif
+
 //-----------------------------------------------------------------------------
 // CONSTANTS
 //-----------------------------------------------------------------------------
@@ -157,6 +161,7 @@ static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out) {
   int i, j, k, l;
   int tot;
 
+  #pragma omp parallel for
   for (i = 0; i < in.rows; i += 1)
     for (j = 0; j < in.cols; j += 1)
       if (in.at<cv::Vec3b>(i, j) == ON)

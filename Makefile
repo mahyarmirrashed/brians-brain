@@ -1,5 +1,5 @@
 CC     := g++
-CFLAGS := -Wall -Wpedantic -Wextra -Werror -Ofast -DNDEBUG -std=c++20
+CFLAGS := -Wall -Wpedantic -Wextra -Werror -Wno-deprecated-enum-enum-conversion -Ofast -fopenmp -DNDEBUG -std=c++20 -I/usr/local/include/opencv4
 LIBS   := -lopencv_core -lopencv_highgui -lopencv_imgcodecs -lopencv_videoio
 RM     := rm -rf
 
