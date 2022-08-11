@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Mahyar Mirrashed (mirrashm@myumanitoba.ca)
  * @brief Generate frames from the Brian's Brain cellular automaton.
- * @version 0.2.0
+ * @version 0.2.1
  * @date 2022-08-10
  *
  * @copyright Copyright (c) 2022 Mahyar Mirrashed
@@ -53,7 +53,7 @@ static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
-const char *argp_program_version = "brains-brain 0.2.0";
+const char *argp_program_version = "brains-brain 0.2.1";
 const char *argp_program_bug_address = "<mirrashm@myumanitoba.ca>";
 
 static char args_doc[] = "";
@@ -95,7 +95,7 @@ static arguments args;
 
 int main(int argc, char **argv);
 static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out);
-static void display_progress(int progress);
+static void display_progress(const int progress);
 static error_t parse_opt(int key, char *arg, struct argp_state *state);
 
 //-----------------------------------------------------------------------------
@@ -204,22 +204,23 @@ static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out) {
  *
  * @param progress Amount of progress.
  */
-static void display_progress(int progress) {
+static void display_progress(const int progress) {
   if (progress < 0 || progress > MAX_PROGRESS)
     return;
 
   struct winsize sz;
+  int rsz_progress;
 
   // get window size from tty
   ioctl(STDOUT_FILENO, TIOCGWINSZ, &sz);
 
   // resize progress to match new progress bar size
-  progress = (progress * sz.ws_row) / MAX_PROGRESS;
+  rsz_progress = (progress * sz.ws_row) / MAX_PROGRESS;
 
   // print progress bar using this weird C stynax
   printf(
-    "\33[2K\rGenerating: [%.*s %.*s] ", progress, PROGRESS_BAR,
-    sz.ws_row - progress, PROGRESS_BAR_BLANK
+    "\33[2K\rGenerating: [%.*s %.*s] %d%%", rsz_progress, PROGRESS_BAR,
+    sz.ws_row - rsz_progress, PROGRESS_BAR_BLANK, progress
   );
 
   // flush progress bar to user
