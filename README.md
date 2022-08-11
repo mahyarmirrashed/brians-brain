@@ -13,3 +13,9 @@ Each cell of the automaton takes three different states: ready (off), firing (on
 To build the program, simply run `make` with the supplied `Makefile`. Then, run the program like a normal binary `./main`.
 
 This program uses OpenMP for accelerating frame generation.
+
+## Generation Options
+
+This program comes equipped with options to generate to any resolution and to alter the number of frames generated (locked at 30 frames per second, however).
+
+View the program's help options with `./main --help`.
