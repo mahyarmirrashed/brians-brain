@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Mahyar Mirrashed (mirrashm@myumanitoba.ca)
  * @brief Generate frames from the Brian's Brain cellular automaton.
- * @version 0.2.1
+ * @version 0.2.2
  * @date 2022-08-10
  *
  * @copyright Copyright (c) 2022 Mahyar Mirrashed
@@ -53,7 +53,7 @@ static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
-const char *argp_program_version = "brains-brain 0.2.1";
+const char *argp_program_version = "brains-brain 0.2.2";
 const char *argp_program_bug_address = "<mirrashm@myumanitoba.ca>";
 
 static char args_doc[] = "";
@@ -151,6 +151,9 @@ int main(int argc, char **argv) {
     for (j = (args.columns - size) / 2; j < (args.columns + size) / 2; j += 1)
       curr.at<cv::Vec3b>(i, j) = std::rand() & 1 ? ON : OFF;
 
+  // hide cursor when printing progress
+  printf("\33[?25l");
+
   for (i = 0; i < args.frames; i += 1) {
     // display progress bar
     display_progress((i * 100) / args.frames);
@@ -164,6 +167,9 @@ int main(int argc, char **argv) {
 
   // report that simulation generation is complete
   printf("\33[2K\rCompleted generating the simulation! Enjoy!\n");
+
+  // re-enable cursor after program
+  printf("\33[?25h");
 
   return EXIT_SUCCESS;
 }
