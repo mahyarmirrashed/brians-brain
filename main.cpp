@@ -191,17 +191,17 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state) {
 
     // perform more detailed error checking based on specific key
     if (key == 'f') {
-      args.frames = value;
+      sargs->frames = value;
     } else if (key == 'c') {
       if (value >= USHRT_MAX)
         argp_failure(state, 1, 0, "too many columns");
       else
-        args.columns = value;
+        sargs->columns = value;
     } else if (key == 'r') {
       if (value >= USHRT_MAX)
         argp_failure(state, 1, 0, "too many rows");
       else
-        args.rows = value;
+        sargs->rows = value;
     }
   } else {
     rc = ARGP_ERR_UNKNOWN;
