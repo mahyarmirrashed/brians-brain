@@ -19,3 +19,7 @@ This program uses OpenMP for accelerating frame generation.
 This program comes equipped with options to generate to any resolution and to alter the number of frames generated (locked at 30 frames per second, however).
 
 View the program's help options with `./main --help`.
+
+## Performance
+
+An interesting observation that I made is that 75% of the CPU time goes to writing the frames to the video stream. Since this is memory-bound, I did not know any way of making it faster.
