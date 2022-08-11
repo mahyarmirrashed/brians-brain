@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Mahyar Mirrashed (mirrashm@myumanitoba.ca)
  * @brief Generate frames from the Brian's Brain cellular automaton.
- * @version 0.1.0
+ * @version 0.1.1
  * @date 2022-08-10
  *
  * @copyright Copyright (c) 2022 Mahyar Mirrashed
@@ -42,7 +42,7 @@ static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
-const char *argp_program_version = "brains-brain 0.1.0";
+const char *argp_program_version = "brains-brain 0.1.1";
 const char *argp_program_bug_address = "<mirrashm@myumanitoba.ca>";
 
 static char args_doc[] = "";
@@ -52,19 +52,19 @@ static struct argp_option options[] = {
   {.name = "frames",
    .key = 'f',
    .arg = "FRAMES",
-   .flags = OPTION_ARG_OPTIONAL,
+   .flags = 0,
    .doc = "Number of frames to generate",
    .group = 0},
   {.name = "columns",
    .key = 'c',
    .arg = "COLUMNS",
-   .flags = OPTION_ARG_OPTIONAL,
+   .flags = 0,
    .doc = "Number of columns in each frame",
    .group = 0},
   {.name = "rows",
    .key = 'r',
    .arg = "ROWS",
-   .flags = OPTION_ARG_OPTIONAL,
+   .flags = 0,
    .doc = "Number of rows in each frame",
    .group = 0},
   {},
