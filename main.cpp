@@ -46,18 +46,21 @@ static struct argp_option options[] = {
    .key = 'f',
    .arg = "FRAMES",
    .flags = OPTION_ARG_OPTIONAL,
-   .doc = "Number of frames to generate"},
+   .doc = "Number of frames to generate",
+   .group = 0},
   {.name = "columns",
    .key = 'c',
    .arg = "COLUMNS",
    .flags = OPTION_ARG_OPTIONAL,
-   .doc = "Number of columns in each frame"},
+   .doc = "Number of columns in each frame",
+   .group = 0},
   {.name = "rows",
    .key = 'r',
    .arg = "ROWS",
    .flags = OPTION_ARG_OPTIONAL,
-   .doc = "Number of rows in each frame"},
-  {0},
+   .doc = "Number of rows in each frame",
+   .group = 0},
+  {},
 };
 
 typedef struct {
@@ -82,7 +85,7 @@ static error_t parse_opt(int key, char *arg, struct argp_state *state);
 
 static struct argp argp {
   .options = options, .parser = parse_opt, .args_doc = args_doc, .doc = doc,
-  .children = NULL,
+  .children = NULL, .help_filter = NULL, .argp_domain = NULL
 };
 
 //-----------------------------------------------------------------------------
