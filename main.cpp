@@ -123,7 +123,7 @@ int main(int argc, char **argv) {
   int i, j;
   int size;
   cv::VideoWriter video;
-  cv::Mat prev, curr;
+  cv::Mat f0, f1;
 
   // set default argument values
   args.frames = DEFAULT_FRAME_COUNT;
@@ -140,8 +140,8 @@ int main(int argc, char **argv) {
   );
 
   // video frame size initialization
-  prev = cv::Mat(args.rows, args.columns, CV_8UC3);
-  curr = cv::Mat(args.rows, args.columns, CV_8UC3);
+  f0 = cv::Mat(args.rows, args.columns, CV_8UC3);
+  f1 = cv::Mat(args.rows, args.columns, CV_8UC3);
 
   // randomly seed frame for interesting initialization
   std::srand(clock());
@@ -149,7 +149,7 @@ int main(int argc, char **argv) {
 
   for (i = (args.rows - size) / 2; i < (args.rows + size) / 2; i += 1)
     for (j = (args.columns - size) / 2; j < (args.columns + size) / 2; j += 1)
-      curr.at<cv::Vec3b>(i, j) = std::rand() & 1 ? ON : OFF;
+      f0.at<cv::Vec3b>(i, j) = std::rand() & 1 ? ON : OFF;
 
   // hide cursor when printing progress
   printf("\33[?25l");
@@ -158,11 +158,15 @@ int main(int argc, char **argv) {
     // display progress bar
     display_progress((i * 100) / args.frames);
     // save current frame
-    video << curr;
-    // migrate current frame to previous frame
-    curr.copyTo(prev);
-    // calculate next frame of automaton
-    brain(prev, curr);
+    if (i & 1)
+      video << f1;
+    else
+      video << f0;
+    // generate next frame
+    if (i & 1)
+      brain(f1, f0);
+    else
+      brain(f0, f1);
   }
 
   // report that simulation generation is complete
