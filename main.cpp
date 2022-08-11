@@ -2,7 +2,7 @@
  * @file main.cpp
  * @author Mahyar Mirrashed (mirrashm@myumanitoba.ca)
  * @brief Generate frames from the Brian's Brain cellular automaton.
- * @version 0.1.1
+ * @version 0.2.0
  * @date 2022-08-10
  *
  * @copyright Copyright (c) 2022 Mahyar Mirrashed
@@ -14,6 +14,8 @@
 #include <limits.h>
 #include <stdint.h>
 #include <stdlib.h>
+#include <sys/ioctl.h>
+#include <unistd.h>
 #include <opencv2/core.hpp>
 #include <opencv2/highgui.hpp>
 
@@ -34,6 +36,15 @@
 // default seeding area for random initialization (always square)
 #define DEFAULT_SEED_AREA 0.4
 
+// progress bar constants
+#define MAX_PROGRESS 100
+#define PROGRESS_BAR                                                           \
+  "##########################################################################" \
+  "##########################"
+#define PROGRESS_BAR_BLANK                                                     \
+  "                                                                          " \
+  "                          "
+
 static const cv::Vec3b ON = cv::Vec3b({255, 255, 255});
 static const cv::Vec3b DYING = cv::Vec3b({255, 0, 0});
 static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
@@ -42,7 +53,7 @@ static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
-const char *argp_program_version = "brains-brain 0.1.1";
+const char *argp_program_version = "brains-brain 0.2.0";
 const char *argp_program_bug_address = "<mirrashm@myumanitoba.ca>";
 
 static char args_doc[] = "";
@@ -84,6 +95,7 @@ static arguments args;
 
 int main(int argc, char **argv);
 static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out);
+static void display_progress(int progress);
 static error_t parse_opt(int key, char *arg, struct argp_state *state);
 
 //-----------------------------------------------------------------------------
@@ -140,6 +152,8 @@ int main(int argc, char **argv) {
       curr.at<cv::Vec3b>(i, j) = std::rand() & 1 ? ON : OFF;
 
   for (i = 0; i < args.frames; i += 1) {
+    // display progress bar
+    display_progress((i * 100) / args.frames);
     // save current frame
     video << curr;
     // migrate current frame to previous frame
@@ -147,6 +161,9 @@ int main(int argc, char **argv) {
     // calculate next frame of automaton
     brain(prev, curr);
   }
+
+  // report that simulation generation is complete
+  printf("\33[2K\rCompleted generating the simulation! Enjoy!\n");
 
   return EXIT_SUCCESS;
 }
@@ -161,7 +178,7 @@ static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out) {
   int i, j, k, l;
   int tot;
 
-  #pragma omp parallel for
+#pragma omp parallel for
   for (i = 0; i < in.rows; i += 1)
     for (j = 0; j < in.cols; j += 1)
       if (in.at<cv::Vec3b>(i, j) == ON)
@@ -180,6 +197,34 @@ static void brain(const cv::Mat &__restrict__ in, cv::Mat &__restrict__ out) {
         // automaton rule dictates turning on only if two neighbor cells are on
         out.at<cv::Vec3b>(i, j) = (tot == 2) ? ON : OFF;
       }
+}
+
+/**
+ * @brief Display progress bar of how much of generation has happened.
+ *
+ * @param progress Amount of progress.
+ */
+static void display_progress(int progress) {
+  if (progress < 0 || progress > MAX_PROGRESS)
+    return;
+
+  struct winsize sz;
+
+  // get window size from tty
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &sz);
+
+  // resize progress to match new progress bar size
+  progress = (progress * sz.ws_row) / MAX_PROGRESS;
+
+  // print progress bar using this weird C stynax
+  printf(
+    "\33[2K\rGenerating: [%.*s %.*s] ", progress, PROGRESS_BAR,
+    sz.ws_row - progress, PROGRESS_BAR_BLANK
+  );
+
+  // flush progress bar to user
+  // clearing terminals is usually buffered
+  fflush(stdout);
 }
 
 /**
