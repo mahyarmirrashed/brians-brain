@@ -27,6 +27,9 @@
 #define DEFAULT_COLUMNS 1280
 #define DEFAULT_ROWS    720
 
+// default seeding area for random initialization (always square)
+#define DEFAULT_SEED_AREA 0.4
+
 static const cv::Vec3b ON = cv::Vec3b({255, 255, 255});
 static const cv::Vec3b DYING = cv::Vec3b({255, 0, 0});
 static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
@@ -101,7 +104,8 @@ static struct argp argp {
  */
 int main(int argc, char **argv) {
   // variables used for video generation
-  int i;
+  int i, j;
+  int size;
   cv::VideoWriter video;
   cv::Mat prev, curr;
 
@@ -124,7 +128,12 @@ int main(int argc, char **argv) {
   curr = cv::Mat(args.rows, args.columns, CV_8UC3);
 
   // randomly seed frame for interesting initialization
-  // TODO
+  std::srand(clock());
+  size = std::min(args.rows, args.columns) * DEFAULT_SEED_AREA;
+
+  for (i = (args.rows - size) / 2; i < (args.rows + size) / 2; i += 1)
+    for (j = (args.columns - size) / 2; j < (args.columns + size) / 2; j += 1)
+      curr.at<cv::Vec3b>(i, j) = std::rand() & 1 ? ON : OFF;
 
   for (i = 0; i < args.frames; i += 1) {
     // save current frame
