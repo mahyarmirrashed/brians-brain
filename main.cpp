@@ -35,7 +35,7 @@ static const cv::Vec3b OFF = cv::Vec3b({0, 0, 0});
 // ARGUMENT PARSER SETUP
 //-----------------------------------------------------------------------------
 
-const char *argp_program_version = "brains-brain 0.0.0";
+const char *argp_program_version = "brains-brain 0.1.0";
 const char *argp_program_bug_address = "<mirrashm@myumanitoba.ca>";
 
 static char args_doc[] = "";
@@ -98,7 +98,7 @@ static struct argp argp {
  */
 int main(int argc, char **argv) {
   // variables used for video generation
-  int i, j;
+  int i;
   cv::VideoWriter video;
   cv::Mat prev, curr;
 
